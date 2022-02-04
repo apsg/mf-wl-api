@@ -4,11 +4,10 @@ namespace Apsg\MF;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Apsg\MF\Commands\MFCommand;
 
 class MFServiceProvider extends PackageServiceProvider
 {
-    public function configurePackage(Package $package) : void
+    public function configurePackage(Package $package): void
     {
         /*
          * This class is a Package Service Provider

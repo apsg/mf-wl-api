@@ -2,9 +2,9 @@
 
 namespace Apsg\MF\Tests;
 
+use Apsg\MF\MFServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Apsg\MF\MFServiceProvider;
 
 class TestCase extends Orchestra
 {
