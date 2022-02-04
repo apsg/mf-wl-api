@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Apsg\MF\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class MFCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'mf-wl-api';
 
     public $description = 'My command';
 
