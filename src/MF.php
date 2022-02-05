@@ -17,8 +17,13 @@ class MF
         $this->baseUrl = $baseUrl ?? BaseRequest::URL;
     }
 
-    public function searchNip(string $nip)
+    public function searchNip(string $nip) : Response
     {
         return (new NipRequest($this->client, $this->baseUrl))->get($nip);
+    }
+
+    public function searchNips(array $nips = []) : Response
+    {
+        return (new NipRequest($this->client, $this->baseUrl))->list($nips);
     }
 }

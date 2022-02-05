@@ -31,13 +31,18 @@ class Response
         }
 
         if (in_array($name, $this->dates, true)) {
-            if ($date = Arr::get($this->data, $name)) {
-                return Carbon::parse($date);
-            }
-
-            return null;
+            return $this->parseDate($name);
         }
 
         return Arr::get($this->data, 'name');
+    }
+
+    protected function parseDate(string $name) : ?Carbon
+    {
+        if ($date = Arr::get($this->data, $name)) {
+            return Carbon::parse($date);
+        }
+
+        return null;
     }
 }
