@@ -7,6 +7,8 @@ use Illuminate\Support\Arr;
 
 class ErrorResponse extends Response
 {
+    const CODE_WRONG_NIP_LENGTH = 'WL-113';
+
     protected array $response;
     public int $code;
     public string $message;
@@ -22,5 +24,10 @@ class ErrorResponse extends Response
     public function getInternalCode() : string
     {
         return Arr::get($this->response, 'code', '');
+    }
+
+    public function isError() : bool
+    {
+        return true;
     }
 }
