@@ -14,11 +14,11 @@ class SearchNipTest extends TestCase
     {
         parent::setUp();
 
-        $this->mf = new MF();
+        $this->mf = new MF(new Client(), 'https://wl-test.mf.gov.pl/api');
     }
 
     /** @test */
-    public function test_invalid_nip_invalid_length()
+    public function it_tests_invalid_nip_invalid_length()
     {
         // given
         $nip = '11111';
@@ -37,7 +37,7 @@ class SearchNipTest extends TestCase
     public function it_tests_invalid_nip_with_valid_length()
     {
         // given
-        $nip = '5591903793';
+        $nip = '1111111111';
 
         // when
         $response = $this->mf->searchNip($nip);
