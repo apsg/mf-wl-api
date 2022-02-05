@@ -8,7 +8,6 @@ use Apsg\MF\Responses\Errors\NotFoundResponse;
 use Apsg\MF\Responses\Models\Subject;
 use Apsg\MF\Responses\Response;
 use Illuminate\Support\Arr;
-use JsonException;
 
 class NipRequest extends BaseRequest
 {
