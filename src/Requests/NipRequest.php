@@ -44,7 +44,6 @@ class NipRequest extends BaseRequest
      * @return ErrorResponse|NotFoundResponse|Subject[]
      * @throws ModelNotFoundException
      * @throws TooManyRequestsException
-     * @throws JsonException
      */
     public function list(array $nips)
     {
