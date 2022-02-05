@@ -19,8 +19,10 @@ composer require apsg/mf-wl-api
 ## Usage
 
 ```php
-$mF = new Apsg\MF();
-echo $mF->echoPhrase('Hello, Apsg!');
+$mf = new Apsg\MF();
+
+$response = $mf->searchNip($someNipToFind);
+
 ```
 
 ## Testing
@@ -36,10 +38,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
