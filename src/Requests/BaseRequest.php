@@ -3,8 +3,12 @@ namespace Apsg\MF\Requests;
 
 use Apsg\MF\Exceptions\ModelNotFoundException;
 use Apsg\MF\Exceptions\TooManyRequestsException;
+use Apsg\MF\Responses\Errors\ErrorResponse;
+use Apsg\MF\Responses\Errors\NotFoundResponse;
+use Apsg\MF\Responses\Models\Subject;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Arr;
 
 abstract class BaseRequest
 {
@@ -51,5 +55,57 @@ abstract class BaseRequest
             . '/'
             . implode(',', $params)
             . '?date=' . $date;
+    }
+
+    protected function getAndParse(string $path, string $identifier) : Subject
+    {
+        $responseData = $this->makeRequest($path, [$identifier]);
+
+        return new Subject(Arr::get($responseData, 'subject'));
+    }
+
+    /**
+     * @param array $nips
+     * @return ErrorResponse|NotFoundResponse|Subject[]
+     * @throws ModelNotFoundException
+     * @throws TooManyRequestsException
+     */
+    protected function listAndParse(string $path, array $identifiers) : array
+    {
+        $responseData = $this->makeRequest($path, $identifiers);
+
+        if ($this->isEmptyResponse($responseData, 'entries')) {
+            return [];
+        }
+
+        return $this->parseListOfSubjects($responseData);
+    }
+
+    protected function isEmptyResponse(mixed $responseData, string $expectedKey) : bool
+    {
+        if (!Arr::has($responseData, $expectedKey)) {
+            return true;
+        }
+
+        if (empty(Arr::get($responseData, $expectedKey))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Subject[]
+     */
+    protected function parseListOfSubjects(array $responseData) : array
+    {
+        $list = [];
+        foreach (Arr::get($responseData, 'entries') as $entries) {
+            foreach (Arr::get($entries, 'subjects') as $subject) {
+                $list[] = new Subject($subject);
+            }
+        }
+
+        return $list;
     }
 }

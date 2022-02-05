@@ -3,7 +3,8 @@ namespace Apsg\MF;
 
 use Apsg\MF\Requests\BaseRequest;
 use Apsg\MF\Requests\NipRequest;
-use Apsg\MF\Responses\Response;
+use Apsg\MF\Requests\RegonRequest;
+use Apsg\MF\Responses\Models\Subject;
 use GuzzleHttp\Client;
 
 class MF
@@ -17,13 +18,24 @@ class MF
         $this->baseUrl = $baseUrl ?? BaseRequest::URL;
     }
 
-    public function searchNip(string $nip) : Response
+    public function searchNip(string $nip) : Subject
     {
         return (new NipRequest($this->client, $this->baseUrl))->get($nip);
     }
 
-    public function searchNips(array $nips = []) : Response
+    public function searchNips(array $nips = []) : array
     {
         return (new NipRequest($this->client, $this->baseUrl))->list($nips);
     }
+
+    public function searchRegon(string $regon) : Subject
+    {
+        return (new RegonRequest($this->client, $this->baseUrl))->get($regon);
+    }
+
+    public function searchRegons(array $regons = []) : array
+    {
+        return (new RegonRequest($this->client, $this->baseUrl))->list($regons);
+    }
+
 }
