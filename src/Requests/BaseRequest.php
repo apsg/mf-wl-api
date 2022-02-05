@@ -1,7 +1,8 @@
 <?php
 namespace Apsg\MF\Requests;
 
-use Apsg\MF\Responses\Errors\ErrorResponse;
+use Apsg\MF\Exceptions\ModelNotFoundException;
+use Apsg\MF\Exceptions\TooManyRequestsException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -10,7 +11,6 @@ abstract class BaseRequest
     public const URL = 'https://wl-api.mf.gov.pl/api/';
 
     protected ?Client $client;
-
     protected string $baseUrl;
 
     public function __construct(Client $client = null, string $baseUrl = self::URL)
@@ -29,7 +29,15 @@ abstract class BaseRequest
                 JSON_THROW_ON_ERROR
             );
         } catch (ClientException $exception) {
-            return new ErrorResponse($exception);
+            if ($exception->getCode() === 404) {
+                throw new ModelNotFoundException($exception->getMessage(), $exception->getCode());
+            }
+
+            if ($exception->getCode() === 429) {
+                throw new TooManyRequestsException($exception->getMessage(), $exception->getCode());
+            }
+
+            throw $exception;
         }
     }
 

@@ -3,6 +3,7 @@ namespace Apsg\MF\Requests;
 
 use Apsg\MF\Responses\Errors\ErrorResponse;
 use Apsg\MF\Responses\Errors\NotFoundResponse;
+use Apsg\MF\Responses\Models\Subject;
 use Apsg\MF\Responses\Response;
 use Illuminate\Support\Arr;
 
@@ -16,18 +17,20 @@ class NipRequest extends BaseRequest
             return $responseData;
         }
 
-        if ($this->isEmptyResponse($responseData)) {
+        if ($this->isEmptyResponse($responseData, 'subject')) {
             return new NotFoundResponse();
         }
+
+        return new Subject(Arr::get($responseData, 'subject'));
     }
 
-    protected function isEmptyResponse(mixed $responseData) : bool
+    protected function isEmptyResponse(mixed $responseData, string $expectedKey) : bool
     {
-        if (!Arr::has($responseData, 'subject')) {
+        if (!Arr::has($responseData, $expectedKey)) {
             return true;
         }
 
-        if (empty(Arr::get($responseData, 'subject'))) {
+        if (empty(Arr::get($responseData, $expectedKey))) {
             return true;
         }
 
