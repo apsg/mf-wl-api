@@ -3,12 +3,15 @@ namespace Apsg\MF\Requests;
 
 use Apsg\MF\Exceptions\ModelNotFoundException;
 use Apsg\MF\Exceptions\TooManyRequestsException;
+use Apsg\MF\Exceptions\WrongInputException;
 use Apsg\MF\Responses\Errors\ErrorResponse;
 use Apsg\MF\Responses\Errors\NotFoundResponse;
 use Apsg\MF\Responses\Models\Subject;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 
 abstract class BaseRequest
 {
@@ -26,13 +29,21 @@ abstract class BaseRequest
     public function makeRequest(string $path, array $params = []) : mixed
     {
         try {
+            $url = $this->buildUrl($path, $params);
+
             return json_decode(
-                $this->client->get($this->buildUrl($path, $params))->getBody()->getContents(),
+                Cache::remember($url, Carbon::now()->addDay(), function () use ($url) {
+                    return $this->client->get($url)->getBody()->getContents();
+                }),
                 true,
                 512,
                 JSON_THROW_ON_ERROR
             );
         } catch (ClientException $exception) {
+            if ($exception->getCode() === 400) {
+                throw new WrongInputException($exception->getMessage(), $exception->getCode());
+            }
+
             if ($exception->getCode() === 404) {
                 throw new ModelNotFoundException($exception->getMessage(), $exception->getCode());
             }
@@ -61,7 +72,11 @@ abstract class BaseRequest
     {
         $responseData = $this->makeRequest($path, [$identifier]);
 
-        return new Subject(Arr::get($responseData, 'subject'));
+        if ($this->isEmptyResponse($responseData, 'result.subject')) {
+            throw  new ModelNotFoundException('No results found');
+        }
+
+        return new Subject(Arr::get($responseData, 'result.subject'));
     }
 
     /**

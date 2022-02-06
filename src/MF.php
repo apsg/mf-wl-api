@@ -20,22 +20,26 @@ class MF
 
     public function searchNip(string $nip) : Subject
     {
-        return (new NipRequest($this->client, $this->baseUrl))->get($nip);
+        return (new NipRequest($this->client, $this->baseUrl))
+            ->get($nip);
     }
 
     public function searchNips(array $nips = []) : array
     {
-        return (new NipRequest($this->client, $this->baseUrl))->list($nips);
+        return (new NipRequest($this->client, $this->baseUrl))
+            ->list($nips);
     }
 
     public function searchRegon(string $regon) : Subject
     {
-        return (new RegonRequest($this->client, $this->baseUrl))->get($regon);
+        return (new RegonRequest($this->client, $this->baseUrl))
+            ->get($regon);
     }
 
     public function searchRegons(array $regons = []) : array
     {
-        return (new RegonRequest($this->client, $this->baseUrl))->list($regons);
+        return (new RegonRequest($this->client, $this->baseUrl))
+            ->list($regons);
     }
 
 }

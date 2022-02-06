@@ -16,6 +16,10 @@ You can install the package via composer:
 composer require apsg/mf-wl-api
 ```
 
+#### Requirements:
+- PHP 8+
+- Laravel (uses Illuminate's Cache facade and Arr helper).
+
 ## Usage
 
 ```php

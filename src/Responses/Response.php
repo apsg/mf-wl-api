@@ -34,7 +34,7 @@ class Response
             return $this->parseDate($name);
         }
 
-        return Arr::get($this->data, 'name');
+        return Arr::get($this->data, $name);
     }
 
     protected function parseDate(string $name) : ?Carbon
@@ -44,5 +44,16 @@ class Response
         }
 
         return null;
+    }
+
+    public function toArray() : array
+    {
+        $output = [];
+        $keys = array_keys($this->data);
+        foreach ($keys as $key) {
+            $output[$key] = $this->$key;
+        }
+
+        return $output;
     }
 }
