@@ -15,7 +15,7 @@ class SearchNipTest extends TestCase
     {
         parent::setUp();
 
-        $this->mf = new MF(new Client(), 'https://wl-test.mf.gov.pl/api');
+        $this->mf = new MF();
     }
 
     /** @test */
@@ -48,13 +48,14 @@ class SearchNipTest extends TestCase
     public function it_finds_valid_nip()
     {
         // given
-        $nip = '5591903793';
+        $nip = ' 525 25-65 1.8,7';
+        $nipSanitized = preg_replace('/\D/', '', $nip);
 
         // when
         $response = $this->mf->searchNip($nip);
 
         // then
-        $this->assertEquals($nip, $response->nip);
+        $this->assertEquals($nipSanitized, $response->nip);
         $this->assertNotEmpty($response->name);
         $this->assertInstanceOf(Carbon::class, $response->registrationLegalDate);
     }

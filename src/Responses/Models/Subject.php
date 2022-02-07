@@ -20,7 +20,7 @@ use Carbon\Carbon;
  * @property-read array          partners" : [ ]
  * @property-read string|null    name "ABC Jan Nowak"
  * @property-read Carbon|null    registrationLegalDate "2018-02-21"
- * @property-read string         removalBasis" : "Ustawa o podatku od towarów i usług Art. 97"
+ * @property-read string|null    removalBasis" : "Ustawa o podatku od towarów i usług Art. 97"
  * @property-read string|null    pesel "22222222222"
  * @property-read array          representatives
  * @property-read string|null    companyName "Nazwa firmy"

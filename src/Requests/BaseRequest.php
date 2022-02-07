@@ -70,7 +70,7 @@ abstract class BaseRequest
 
     protected function getAndParse(string $path, string $identifier) : Subject
     {
-        $responseData = $this->makeRequest($path, [$identifier]);
+        $responseData = $this->makeRequest($path, [$this->sanitizeIdentifier($identifier)]);
 
         if ($this->isEmptyResponse($responseData, 'result.subject')) {
             throw  new ModelNotFoundException('No results found');
@@ -87,7 +87,7 @@ abstract class BaseRequest
      */
     protected function listAndParse(string $path, array $identifiers) : array
     {
-        $responseData = $this->makeRequest($path, $identifiers);
+        $responseData = $this->makeRequest($path, $this->sanitizeIdentifier($identifiers));
 
         if ($this->isEmptyResponse($responseData, 'entries')) {
             return [];
@@ -122,5 +122,10 @@ abstract class BaseRequest
         }
 
         return $list;
+    }
+
+    protected function sanitizeIdentifier(array|string $identifier) : array|string
+    {
+        return preg_replace('/\D/', '', $identifier);
     }
 }
