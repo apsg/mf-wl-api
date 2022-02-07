@@ -31,14 +31,12 @@ abstract class BaseRequest
         try {
             $url = $this->buildUrl($path, $params);
 
-            return json_decode(
-                Cache::remember($url, Carbon::now()->addDay(), function () use ($url) {
-                    return $this->client->get($url)->getBody()->getContents();
-                }),
-                true,
-                512,
-                JSON_THROW_ON_ERROR
-            );
+            return Cache::remember($url, Carbon::now()->addDay(), function () use ($url) {
+                return json_decode($this->client->get($url)->getBody()->getContents(),
+                    true,
+                    512,
+                    JSON_THROW_ON_ERROR);
+            });
         } catch (ClientException $exception) {
             if ($exception->getCode() === 400) {
                 throw new WrongInputException($exception->getMessage(), $exception->getCode());
