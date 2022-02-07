@@ -3,21 +3,10 @@ namespace Apsg\MF\Tests;
 
 use Apsg\MF\Exceptions\ModelNotFoundException;
 use Apsg\MF\Exceptions\WrongInputException;
-use Apsg\MF\MF;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 
 class SearchNipTest extends TestCase
 {
-    private MF $mf;
-
-    protected function setUp() : void
-    {
-        parent::setUp();
-
-        $this->mf = new MF();
-    }
-
     /** @test */
     public function it_tests_invalid_nip_invalid_length()
     {

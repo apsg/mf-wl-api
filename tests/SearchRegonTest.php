@@ -1,21 +1,10 @@
 <?php
 namespace Apsg\MF\Tests;
 
-use Apsg\MF\MF;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 
 class SearchRegonTest extends TestCase
 {
-    private MF $mf;
-
-    protected function setUp() : void
-    {
-        parent::setUp();
-
-        $this->mf = new MF();
-    }
-
     /** @test */
     public function it_finds_valid_regon()
     {
@@ -24,6 +13,8 @@ class SearchRegonTest extends TestCase
 
         // when
         $response = $this->mf->searchRegon($regon);
+
+        dd($response);
 
         // then
         $this->assertEquals($regon, $response->regon);
