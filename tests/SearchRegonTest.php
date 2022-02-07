@@ -9,12 +9,10 @@ class SearchRegonTest extends TestCase
     public function it_finds_valid_regon()
     {
         // given
-        $regon = '146826296';
+        $regon = static::TEST_REGON;
 
         // when
         $response = $this->mf->searchRegon($regon);
-
-        dd($response);
 
         // then
         $this->assertEquals($regon, $response->regon);

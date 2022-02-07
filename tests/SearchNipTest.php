@@ -37,14 +37,13 @@ class SearchNipTest extends TestCase
     public function it_finds_valid_nip()
     {
         // given
-        $nip = ' 525 25-65 1.8,7';
-        $nipSanitized = preg_replace('/\D/', '', $nip);
+        $nip = static::TEST_NIP;
 
         // when
         $response = $this->mf->searchNip($nip);
 
         // then
-        $this->assertEquals($nipSanitized, $response->nip);
+        $this->assertEquals($nip, $response->nip);
         $this->assertNotEmpty($response->name);
         $this->assertInstanceOf(Carbon::class, $response->registrationLegalDate);
     }
